@@ -17,7 +17,8 @@
 .NOTES
     Author: Kristopher Scheuer
     Created: 20250603
-    Version: 1.0.0
+    Modified: 20250604
+    Version: 1.1.0
 
 #>
 
@@ -33,13 +34,19 @@ param (
 # ============================================================
 # SECTION: Global Variables
 # ============================================================
+$LogFilePath = "$PSScriptRoot\logs"
+$LogFileNamePrefix = "bootstrap-logs"
+$LogFileRetentionDays = 7
+
+
+# ============================================================
+# SECTION: Script Variable Constaints
+# ============================================================
 $ScriptStartTime = Get-Date
 Set-Location -Path $PSScriptRoot
-$LogFilePath = "$PSScriptRoot\logs"
-$LogFileName = "bootstrap-logs-$(Get-Date -Format 'yyyyMMdd-T-HHmmss')"
-$LogFilePattern = "bootstrap-logs-*.log"
+$LogFileName = "$LogFileNamePrefix-$(Get-Date -Format 'yyyyMMdd-T-HHmmss').log"
+$LogFilePattern = "$LogFileNamePrefix-*.log"
 $LogFile = Join-Path $LogFilePath $LogFileName
-$LogFileRetentionDays = 7
 
 
 # ============================================================
@@ -63,6 +70,7 @@ catch {
 # ============================================================
 function Write-Log {
     param (
+        [Parameter(Mandatory = $true)]
         [string]$Message,
         [ValidateSet("INFO", "WARN", "ERROR")]
         [string]$Level = "INFO"
@@ -107,6 +115,14 @@ function Remove-OldLogs {
 
 
 # ============================================================
+# SECTION: Custom Imports
+# ============================================================
+    #=======================================
+    # Add and Import-Module Commands Here
+    #=======================================
+
+
+# ============================================================
 # SECTION: Custom Functions
 # ============================================================
     #=======================================
@@ -118,6 +134,7 @@ function Remove-OldLogs {
 # SECTION: Main Script Logic
 # ============================================================
 try {
+    Clear-Host
     #===========================
     # Your Script should go here
     #===========================
