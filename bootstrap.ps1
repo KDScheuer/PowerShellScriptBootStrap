@@ -1,38 +1,21 @@
-<#
-.SYNOPSIS
-    Powershell Script Template
-
-.DESCRIPTION
-    This script is a template to aid in the development of scripts. It includes built in Logging and Log Rotation.
-
-.PARAMETER SomeParameter
-    Description of what SomeParameter does defined in the Script Parameters Section.
-
-.PARAMETER SomeOtherParameter
-    Description of what SomeOtherParameter does defined in the Script Parameters Section.
-
-.EXAMPLE
-    .\bootstrap.ps1 -SomeParameter "something"
-
-.NOTES
-    Author: Kristopher Scheuer
-    Created: 20250603
-    Modified: 20250604
-    Version: 1.1.0
-
-#>
-
 # ============================================================
-# SECTION: Script Parameters
+# SECTION: Script Parameters (CLI Arguments)
 # ============================================================
 param (
     [string]$SomeParameter,
     [string]$SomeOtherParameter
 )
 
+# ============================================================
+# SECTION: Custom Imports
+# ============================================================
+    #=======================================
+    # Add and Import-Module Commands Here
+    #=======================================
+
 
 # ============================================================
-# SECTION: Global Variables
+# SECTION: Global Variables (Changable Values)
 # ============================================================
 $LogFilePath = "$PSScriptRoot\logs"
 $LogFileNamePrefix = "bootstrap-logs"
@@ -40,7 +23,7 @@ $LogFileRetentionDays = 7
 
 
 # ============================================================
-# SECTION: Script Variable Constaints
+# SECTION: Global Variables (Vars that shouldn't be changed) 
 # ============================================================
 $ScriptStartTime = Get-Date
 Set-Location -Path $PSScriptRoot
@@ -50,7 +33,7 @@ $LogFile = Join-Path $LogFilePath $LogFileName
 
 
 # ============================================================
-# SECTION: Create Log File
+# SECTION: Log File Management
 # ============================================================
 try {
     if (-not $LogFilePath -or -not $LogFileName -or -not $LogFile) {
@@ -64,10 +47,6 @@ catch {
     throw "Error creating log directory: $_"
 }
 
-
-# ============================================================
-# SECTION: Logging Function
-# ============================================================
 function Write-Log {
     param (
         [Parameter(Mandatory = $true)]
@@ -93,10 +72,6 @@ function Write-Log {
     }
 }
 
-
-# ============================================================
-# SECTION: Log Rotation Function
-# ============================================================
 function Remove-OldLogs {
     param (
         [int]$RetentionDays = 7
@@ -115,14 +90,6 @@ function Remove-OldLogs {
 
 
 # ============================================================
-# SECTION: Custom Imports
-# ============================================================
-    #=======================================
-    # Add and Import-Module Commands Here
-    #=======================================
-
-
-# ============================================================
 # SECTION: Custom Functions
 # ============================================================
     #=======================================
@@ -135,6 +102,7 @@ function Remove-OldLogs {
 # ============================================================
 try {
     Clear-Host
+    Write-Log -Message "Script Start"
     #===========================
     # Your Script should go here
     #===========================
@@ -145,7 +113,7 @@ catch {
 }
 finally {
     $duration = (Get-Date) - $ScriptStartTime
-    Write-Log -Message "Script finished. Duration: $($duration.TotalSeconds) seconds."
+    Write-Log -Message "Script Finished. Duration: $($duration.TotalSeconds) seconds."
     Remove-OldLogs -RetentionDays $LogFileRetentionDays
     exit 0
 }
