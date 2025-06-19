@@ -13,9 +13,9 @@ I created this template as a starting point for custom scripts. By templatitizin
 This script automates
 - Log File Creation
 - Log File Rotation
-- Logging with different levels ["INFO", "WARN", "ERROR"]
+- Logging with different levels `["INFO", "WARN", "ERROR"]`
 - Execution Time Tracking
-- Failure handling easily (just add a 'throw "X"' and the script will log the encounted error and exit gracefully)
+- Failure handling easily (just add a `throw "X"` and the script will log the encounted error and exit gracefully)
 
 
 ## Logging
