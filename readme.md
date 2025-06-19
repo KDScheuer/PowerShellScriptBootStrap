@@ -8,17 +8,6 @@
 
 # PowerShell Script Template
 
-## Overview
-I created this template as a starting point for custom scripts. By templatizing general script functions, this template allows you to immediately focus on the core logic—knowing that once created, whether run manually or via Scheduled Task, all logging and file rotation will be taken care of.
-
-This script automates:
-- Log File Creation
-- Log File Rotation
-- Logging with different levels: `["INFO", "WARN", "ERROR"]`
-- Execution Time Tracking
-- Easy failure handling (just add a `throw "X"` and the script will log the encountered error and exit gracefully)
-
-# Table of Contents
 - [Overview](#overview)
 - [Logging](#logging)
   - [Examples](#examples)
@@ -29,6 +18,17 @@ This script automates:
 - [Scheduled Task Considerations](#scheduled-task-considerations)
 - [Extending the Script](#extending-the-script)
 - [License](#license)
+
+## Overview
+I created this template as a starting point for custom scripts. By templatizing general script functions, this template allows you to immediately focus on the core logic—knowing that once created, whether run manually or via Scheduled Task, all logging and file rotation will be taken care of.
+
+This script automates:
+- Log File Creation
+- Log File Rotation
+- Logging with different levels: `["INFO", "WARN", "ERROR"]`
+- Execution Time Tracking
+- Easy failure handling (just add a `throw "X"` and the script will log the encountered error and exit gracefully)
+
 
 ## Logging
 ### Examples
