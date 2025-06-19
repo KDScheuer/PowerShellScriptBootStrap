@@ -30,6 +30,7 @@ Set-Location -Path $PSScriptRoot
 $LogFileName = "$LogFileNamePrefix-$(Get-Date -Format 'yyyyMMdd-T-HHmmss').log"
 $LogFilePattern = "$LogFileNamePrefix-*.log"
 $LogFile = Join-Path $LogFilePath $LogFileName
+$ScriptSucceeded = $true
 
 
 # ============================================================
@@ -109,11 +110,14 @@ try {
 }
 catch {
     Write-Log -Message "Error: $_" -Level "ERROR"
-    exit 1
+    $ScriptSucceeded = $false
 }
 finally {
     $duration = (Get-Date) - $ScriptStartTime
     Write-Log -Message "Script Finished. Duration: $($duration.TotalSeconds) seconds."
     Remove-OldLogs -RetentionDays $LogFileRetentionDays
+    if (-not $ScriptSucceeded) {
+        exit(1)
+    }
     exit 0
 }
