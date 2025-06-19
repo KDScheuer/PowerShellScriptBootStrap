@@ -33,10 +33,12 @@ Logs are saved to a `logs` subdirectory within the script's root path. The log f
 - The `-YYYYMMDD-T-HHMMSS.log` is appeneded automatically to the value of the `$LogFileNamePrefix` variable. In the below instnace `$LogFileNamePrefix = bootstrap-logs`
 ```
 C:\
-    \Scripts
-        bootstrap.ps1
-        \logs
-            bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+└── Scripts\
+    ├── bootstrap.ps1
+    └── logs\
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
 ```
 
 ### Log Rotation
