@@ -9,94 +9,6 @@
 # PowerShell Script Template
 
 ## Overview
-I created this template as a starting point for custom scripts. By templatitizing general script functions this template allows you to imediatly focus on the core logic, knowing that once created a scheduled task or manually ran that all logging and file rotation will be taken care of. 
-This script automates
-- Log File Creation
-- Log File Rotation
-- Logging with different levels `["INFO", "WARN", "ERROR"]`
-- Execution Time Tracking
-- Failure handling easily (just add a `throw "X"` and the script will log the encounted error and exit gracefully)
-
-
-## Logging
-### Examples
-Below are example invocations of the `Write-Log` function. Note in this example that the `-Message` is optional and no `-Level` needs to be passed if the log is `INFO`.
-```powershell
-Write-Log "Removed $user from $group"
-Write-Log "Removed $user from $group" -Level "INFO"
-Write-Log -Message "$user was not in $group" -Level "WARN"
-Write-Log "Failed to remove $user: $_" -Level "ERROR"
-```
-
-### Log File
-Logs are saved to a `logs` subdirectory within the script's root path. The log file is timestamped to avoid overwriting previous runs.
-- The `-YYYYMMDD-T-HHMMSS.log` is appeneded automatically to the value of the `$LogFileNamePrefix` variable. In the below instnace `$LogFileNamePrefix = bootstrap-logs`
-```
-C:\
-└── Scripts\
-    ├── bootstrap.ps1
-    └── logs\
-        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
-        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
-        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
-```
-
-### Log Rotation
-
-Log files older than `$LogFileRetentionDays` days are automatically deleted at the end of each run. The default value for this is 7. Log rotations will look for files that begin with the `$LogFileNamePrefix` to avoid deleting logs from other scripts that may happen to also be in the `/logs` directory.
-
-### Log Levels
-By default when calling `Write-Log` the `INFO` level is applied. You can modify the level with: `Write-Log "Unexpected value" -Level "ERROR"`.
-- Log entries are both printed to the console and appended to the log file for ease of development. 
-* `INFO` - General information
-* `WARN` - Warnings
-* `ERROR` - Critical issues and exceptions
-
-## Error Handling
-By placing your code inside the `try` block you are able to exit the program with logging of the encounted error by using `throw`. 
-The below example would log the message in the `throw` statement and exit.
-```powershell
-......
-    try {
-        Remove-ADGroupMember -Identity $group -Users $user -ErrorAction Stop
-    }
-    catch {
-        throw "Failed to remove $user with: $_"
-    }
-......
-```
-
-## Scheduled Task Considerations
-
-This script is optimized to run reliably as a Scheduled Task:
-
-* Uses `$PSScriptRoot` to ensure paths are relative to the script's location
-* Changes working directory to script root using `Set-Location -Path $PSScriptRoot`
-* Console and file logging provide runtime feedback and troubleshooting information
-
-## Extending the Script
-
-To customize the script, add your own logic under the `Main Script Logic` section. Define reusable code under `Custom Functions`.
-
-## Author
-
-**Kristopher Scheuer**
-Created: June 3, 2025
-Version: 1.1.0
-
----
-
-Feel free to fork or clone this template to jumpstart your own automation projects.
-
-
-
-
-
-
-
-
-# PowerShell Script Template
-## Overview
 I created this template as a starting point for custom scripts. By templatizing general script functions, this template allows you to immediately focus on the core logic—knowing that once created, whether run manually or via Scheduled Task, all logging and file rotation will be taken care of.
 
 This script automates:
@@ -105,6 +17,18 @@ This script automates:
 - Logging with different levels: `["INFO", "WARN", "ERROR"]`
 - Execution Time Tracking
 - Easy failure handling (just add a `throw "X"` and the script will log the encountered error and exit gracefully)
+
+# Table of Contents
+- [Overview](#overview)
+- [Logging](#logging)
+  - [Examples](#examples)
+  - [Log File](#log-file)
+  - [Log Rotation](#log-rotation)
+  - [Log Levels](#log-levels)
+- [Error Handling](#error-handling)
+- [Scheduled Task Considerations](#scheduled-task-considerations)
+- [Extending the Script](#extending-the-script)
+- [License](#license)
 
 ## Logging
 ### Examples
@@ -121,14 +45,14 @@ Write-Log "Failed to remove $user: $_" -Level "ERROR"
 Logs are saved to a `logs` subdirectory within the script's root path. The log file is timestamped to avoid overwriting previous runs.
 
 The suffix `-YYYYMMDD-T-HHMMSS.log` is appended automatically to the value of the `$LogFileNamePrefix` variable. For example, with `$LogFileNamePrefix = "bootstrap-logs"`:
-```bash
+```
 C:\
-    \Scripts
-        bootstrap.ps1
-        \logs
-            bootstrap-logs-YYYYMMDD-T-HHMMSS.log
-            bootstrap-logs-YYYYMMDD-T-HHMMSS.log
-            bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+└── Scripts\
+    ├── bootstrap.ps1
+    └── logs\
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
+        └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
 ```
 ### Log Rotation
 Log files older than `$LogFileRetentionDays` days are automatically deleted at the end of each run. The default is 7 days. Log rotation will only target files that begin with the `$LogFileNamePrefix`, to avoid deleting logs from other scripts that may share the same `logs` directory.
