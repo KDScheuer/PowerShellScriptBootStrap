@@ -2,7 +2,7 @@
   <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-5.0+-blue?logo=powershell&logoColor=white" />
   <img alt="Platform" src="https://img.shields.io/badge/Platform-Windows-lightgrey?logo=windows&logoColor=blue" />
   <img alt="License: Unlicense" src="https://img.shields.io/badge/license-Unlicense-lightgrey.svg?logo=openaccess&logoColor=blue" />
-  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blueviolet?logo=semantic-release" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.2.0-blueviolet?logo=semantic-release" />
   <img alt="Status" src="https://img.shields.io/badge/status-Stable-brightgreen?logo=checkmarx" />
 </p>
 
@@ -20,25 +20,27 @@
 - [License](#license)
 
 ## Overview
-I created this template as a starting point for custom scripts. By templatizing general script functions, this template allows you to immediately focus on the core logic—knowing that once created, whether run manually or via Scheduled Task, all logging and file rotation will be taken care of.
+This template provides a solid starting point for custom PowerShell scripts, allowing you to focus immediately on your core logic. It handles logging, log file rotation, error handling, and environment setup, whether the script runs manually or via Scheduled Task.
 
-This script automates:
-- Log File Creation
-- Log File Rotation
-- Logging with different levels: `["INFO", "WARN", "ERROR"]`
-- Execution Time Tracking
-- Easy failure handling (just add a `throw "X"` and the script will log the encountered error and exit gracefully)
+Features include:
+- Automatic log file creation with timestamped filenames
+- Log rotation for files older than a configurable number of days (default: 7)
+- Multi-level logging with color-coded console output
+- Execution time tracking and clean exit codes
+- Module import with error detection and install hints
 
 
 ## Logging
 ### Examples
-Below are example invocations of the `Write-Log` function. Note that in this example, the `-Message` is optional and no `-Level` needs to be passed if the log level is `INFO`.
+Use the `Write-Log` function like this:
 
 ```powershell
 Write-Log "Removed $user from $group"
 Write-Log "Removed $user from $group" -Level "INFO"
 Write-Log -Message "$user was not in $group" -Level "WARN"
 Write-Log "Failed to remove $user: $_" -Level "ERROR"
+Write-Log "This is a debug message" -Level "DEBUG"
+Write-Log "Notice: special event happened" -Level "NOTICE"
 ```
 
 ### Log File
@@ -55,46 +57,45 @@ C:\
         └── bootstrap-logs-YYYYMMDD-T-HHMMSS.log
 ```
 ### Log Rotation
-Log files older than `$LogFileRetentionDays` days are automatically deleted at the end of each run. The default is 7 days. Log rotation will only target files that begin with the `$LogFileNamePrefix`, to avoid deleting logs from other scripts that may share the same `logs` directory.
+Log files older than `$LogFileRetentionDays` (default 7) are automatically deleted at the end of each run. Only files matching the $LogFileNamePrefix pattern are removed to avoid interfering with unrelated logs.
 
 ### Log Levels
-When calling `Write-Log`, the default level is `INFO`. You can modify it by specifying the level:
-```powershell
-Write-Log "Unexpected value" -Level "ERROR"
-```
-All log entries are:
-- Printed to the console (with color coding)
-- Appended to the active log file
+Supported levels and their usage:
+| Level  | Description                       |
+|--------|-----------------------------------|
+| DEBUG  | Detailed debug infromation        |
+| INFO   | General informtion   `defualt `   |
+| NOTICE | Important but non-critical events |
+| WARN   | Warning condidtions               |
+| ERROR  | Errors and exceptions             |
+| FATAL  | Critical failure causing exit     |
 
-### Log levels:
-- INFO – General information
-- WARN – Warnings
-- ERROR – Critical issues and exceptions
+All log entries are:
+- Printed to the console (filtered by `$ConsoleLogLevel`) and color-coded
+- Appended to the active log file with timestap
+The console output respects the `$ConsoleLogLevel` variable. For example, setting `$ConsoleLogLevel = "WARN"` will show only warnings, errors, and fatal messages in the console, but all logs are still written to the file.
 
 ## Error Handling
-By placing your code inside a `try` block, you can exit the program with error logging by simply using `throw`. For example:
+Wrap your main logic in a try block. Use `throw` to signal errors, which the script logs and exits cleanly:
 ```powershell
-......
 try {
     Remove-ADGroupMember -Identity $group -Users $user -ErrorAction Stop
 }
 catch {
-    throw "Failed to remove $user with: $_"
+    throw "Failed to remove $user with error: $_"
 }
-......
 ```
-This will log the message inside the `throw` statement and exit cleanly.
 
 ## Scheduled Task Considerations
-This script is optimized to run reliably as a Scheduled Task:
-- Uses `$PSScriptRoot` to ensure all paths are relative to the script's location
-- Changes working directory to the script root using `Set-Location -Path $PSScriptRoot`
-- Console and file logging provide both runtime feedback and post-run troubleshooting info
+This script is designed to work well with Scheduled Tasks:
+- Uses `$PSScriptRoot` for relative paths
+- Sets the current directory to script root for consistent file operations
+- Provides console and file logging for runtime visibility and post-run analysis
 
 ## Extending the Script
-To customize the script:
-- Add your logic under the Main Script Logic section
-- Define reusable functionality under Custom Functions
+- Add your main automation logic in the Main Script Logic section.
+- Add reusable functions in the Custom Functions section.
+- Add or remove modules in the Import-Modules function as needed.
 
 ## License
 This project is released into the public domain under the Unlicense.
