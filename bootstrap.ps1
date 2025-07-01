@@ -1,17 +1,24 @@
 # ============================================================
-# SECTION: Script Parameters (CLI Arguments)
-# ============================================================
-param (
-    [string]$SomeParameter,
-    [string]$SomeOtherParameter
-)
-
-# ============================================================
 # SECTION: Custom Imports
 # ============================================================
-    #=======================================
-    # Add and Import-Module Commands Here
-    #=======================================
+function Import-Modules {
+    $requiredModules = @(
+        @{ Name = "ActiveDirectory"; InstallHint = "Install-WindowsFeature RSAT-AD-Powershell"},
+        @{ Name = "VMware.PowerCLI"; InstallHint = "Install-Module VMware.PowerCLI"}
+    )
+
+    foreach ($module in $requiredModules) {
+        try {
+            Import-Module $module.Name -ErrorAction Stop
+            Write-Log "Imported module: $($module.Name)" -Level "DEBUG"
+        }
+        catch {
+            Write-Log "FATAL ERROR: Required module $($module.Name) is not installed or failed to load." -Level "FATAL"
+            Write-Log "Hint: $($module.InstallHint)" -Level "FATAL"
+            throw "Missing required module: $($module.Name)"
+        }
+    }
+}
 
 
 # ============================================================
@@ -20,6 +27,7 @@ param (
 $LogFilePath = "$PSScriptRoot\logs"
 $LogFileNamePrefix = "bootstrap-logs"
 $LogFileRetentionDays = 7
+$ConsoleLogLevel = "DEBUG"
 
 
 # ============================================================
@@ -52,19 +60,29 @@ function Write-Log {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Message,
-        [ValidateSet("INFO", "WARN", "ERROR")]
+        [ValidateSet("DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL")]
         [string]$Level = "INFO"
     )
 
     $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $LogEntry = "[$Timestamp] [$Level] $Message"
     
-    switch ($Level) {
-        "INFO" { Write-Host $LogEntry }
-        "WARN" { Write-Host $LogEntry -ForegroundColor Yellow }
-        "ERROR" { Write-Host $LogEntry -ForegroundColor Red }
+
+    $logLevels = @("DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL")
+    $currentLevelIndex = $logLevels.IndexOf($Level)
+    $thresholdIndex = $logLevels.IndexOf($ConsoleLogLevel)
+    # Write to screen only if level meets or exceeds threshold
+    if ($currentLevelIndex -ge $thresholdIndex) {
+        switch ($Level) {
+            "DEBUG"  { Write-Host $LogEntry -ForegroundColor DarkGray }
+            "INFO"   { Write-Host $LogEntry -ForegroundColor White }
+            "NOTICE" { Write-Host $LogEntry -ForegroundColor Cyan }
+            "WARN"   { Write-Host $LogEntry -ForegroundColor Yellow }
+            "ERROR"  { Write-Host $LogEntry -ForegroundColor DarkRed }
+            "FATAL"  { Write-Host $LogEntry -ForegroundColor Red }
+        }
     }
-    
+
     try {
         Add-Content -Path $LogFile -Value $LogEntry
     }
@@ -103,13 +121,18 @@ function Remove-OldLogs {
 # ============================================================
 try {
     Clear-Host
-    Write-Log -Message "Script Start"
+    Write-Log -Message "Script Start: $ScriptStartTime" -Level "INFO"
+    Write-Log "Running on computer: $env:COMPUTERNAME as user: $env:USERNAME" -Level "DEBUG"
+    Write-Log "PowerShell version: $($PSVersionTable.PSVersion)" -Level "DEBUG"
+    Write-Log "Script path: $PSScriptRoot" -Level "DEBUG"
+    Import-Modules
+
     #===========================
     # Your Script should go here
     #===========================
 }
 catch {
-    Write-Log -Message "Error: $_" -Level "ERROR"
+    Write-Log -Message "Error: $_" -Level "FATAL"
     $ScriptSucceeded = $false
 }
 finally {
