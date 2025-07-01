@@ -64,7 +64,7 @@ Supported levels and their usage:
 | Level  | Description                       |
 |--------|-----------------------------------|
 | DEBUG  | Detailed debug infromation        |
-| INFO   | General informtion   `defualt `   |
+| INFO   | General informtion   `default `   |
 | NOTICE | Important but non-critical events |
 | WARN   | Warning condidtions               |
 | ERROR  | Errors and exceptions             |
