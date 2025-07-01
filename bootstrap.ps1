@@ -71,7 +71,7 @@ function Write-Log {
     $logLevels = @("DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL")
     $currentLevelIndex = $logLevels.IndexOf($Level)
     $thresholdIndex = $logLevels.IndexOf($ConsoleLogLevel)
-    # Write to screen only if level meets or exceeds threshold
+
     if ($currentLevelIndex -ge $thresholdIndex) {
         switch ($Level) {
             "DEBUG"  { Write-Host $LogEntry -ForegroundColor DarkGray }
