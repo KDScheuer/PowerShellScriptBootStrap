@@ -1,5 +1,5 @@
 # ==========   Imports   ==========
-#Requires -modules ActiveDirectory
+# Requires -modules ActiveDirectory
 
 
 # ==========   Variables   ==========
@@ -24,9 +24,9 @@ function Write-Log {
 
 
 Clear-Host
-Write-Log -Message "Script Start: $ScriptStartTime"
+Write-Log -Message "Script Start: $ScriptStartTime" -Level NOTICE
 # ==========   Script Start   ==========
 
 
 # ==========   Script End   ==========
-Write-Log -Message "Script Finished. Duration: $(((Get-Date) - $ScriptStartTime).TotalSeconds) seconds."
+Write-Log -Message "Script Finished. Duration: $(((Get-Date) - $ScriptStartTime).TotalSeconds) seconds." -Level NOTICE

@@ -6,8 +6,17 @@
   <img alt="Status" src="https://img.shields.io/badge/status-Stable-brightgreen?logo=checkmarx" />
 </p>
 
-# PowerShell Script Template
+## Bootstrap Variants
+This repository includes two PowerShell script templates:
 
+| Variant	| Description |
+|---------|-------------|
+| Full	  | Complete template for production-quality scripts with log rotation, module management, and structured sections. Ideal for scheduled tasks or reusable automation. |
+| Lite | Minimal version focused on ad-hoc use. Same logging format, no rotation or module handling. Great for short scripts or quick admin tasks. |
+
+Both use the same `Write-Log` function, so transitioning between them is seamless.
+
+# PowerShell Script Template
 - [Overview](#overview)
 - [Logging](#logging)
   - [Examples](#examples)
