@@ -14,19 +14,20 @@ if (-not (Test-Path $LogFilePath)) { New-Item -ItemType Directory -Path $LogFile
 function Write-Log {
     param (
         [string]$Message = "-", 
-        [ValidateSet("INFO", "NOTICE", "WARN", "ERROR")] [string]$Level = "INFO"
+        [ValidateSet("DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL")] [string]$Level = "INFO"
     )
-    $Colors = @{INFO="White"; NOTICE="Cyan"; WARN="Yellow"; ERROR="RED"}
+    $Colors = @{DEBUG="DarkGray"; INFO="White"; NOTICE="Cyan"; WARN="Yellow"; ERROR="DARKRED"; FATAL="RED"}
     $LogEntry = "[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] [$Level] $Message"
     Write-Host $LogEntry -ForegroundColor $Colors[$Level]
     Add-Content -Path $LogFile -Value $LogEntry
 }
 
 
-Clear-Host
-Write-Log -Message "Script Start: $ScriptStartTime" -Level NOTICE
 # ==========   Script Start   ==========
+Clear-Host
+Write-Log -Message "Script Start: $ScriptStartTime"
 
+# ==========   Your Code Here   ==========
 
+Write-Log -Message "Script Finished. Duration: $(((Get-Date) - $ScriptStartTime).TotalSeconds) seconds."
 # ==========   Script End   ==========
-Write-Log -Message "Script Finished. Duration: $(((Get-Date) - $ScriptStartTime).TotalSeconds) seconds." -Level NOTICE
