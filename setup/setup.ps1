@@ -7,10 +7,10 @@ $snippetDest = "$env:APPDATA\Code\User\snippets\powershell.json"
 # Clone or update the repo
 try {
     if (!(Test-Path $localPath)) {
-        Write-Host "Temporarily Cloning Repo to $localPath"
+        Write-Host "Temporarily Cloning Repo to $localPath" -ForegroundColor Green
         git clone $repoUrl $localPath | Out-Null
     } else {
-        Write-Host "Repo already exists. Pulling latest changes..."
+        Write-Host "Repo already exists. Pulling latest changes..." -ForegroundColor Green
         Set-Location $localPath
         git pull | Out-Null
     }   
