@@ -1,0 +1,8 @@
+[2025-07-21 20:04:45] [INFO] Script Start: 07/21/2025 20:04:45
+[2025-07-21 20:04:45] [DEBUG] Running on computer: KRIS-LAPTOP as user: kdsch
+[2025-07-21 20:04:45] [DEBUG] PowerShell version: 5.1.26100.4652
+[2025-07-21 20:04:45] [DEBUG] Script path: C:\Users\kdsch\OneDrive\Desktop\PowerShellScriptBootStrap\setup
+[2025-07-21 20:04:45] [FATAL] FATAL ERROR: Required module ActiveDirectory is not installed or failed to load.
+[2025-07-21 20:04:45] [FATAL] Hint: Install-WindowsFeature RSAT-AD-Powershell
+[2025-07-21 20:04:45] [FATAL] Error: Missing required module: ActiveDirectory
+[2025-07-21 20:04:45] [INFO] Script Finished. Duration: 0.1028617 seconds.

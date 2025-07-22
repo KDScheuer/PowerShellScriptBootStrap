@@ -14,10 +14,19 @@ if (!(Test-Path $localPath)) {
 }
 
 # Install VS Code snippet
-if (Test-Path $snippetSource) {
-    Write-Host "Copying PowerShell snippets to VS Code..."
-    Copy-Item $snippetSource $snippetDest -Force
-    Write-Host "✅ Snippets installed to: $snippetDest"
-} else {
-    Write-Warning "🚫 Snippet file not found: $snippetSource"
+try {
+    if (Test-Path $snippetSource) {
+        Write-Host "Copying PowerShell snippets to VS Code..."
+        Copy-Item $snippetSource $snippetDest -Force
+        Write-Host "✅ Snippets installed to: $snippetDest"
+    } else {
+        Write-Warning "🚫 Snippet file not found: $snippetSource"
+    }
+}
+catch {
+    Write-Warning "Error Copying files from $snippetSource to $snippetDest"
+}
+finally {
+    Remove-Item -Recurse -Force $localPath
+    Write-Host "🧹 Deleted temporary repo at: $localPath"
 }

@@ -16,6 +16,13 @@ This repository includes two PowerShell script templates:
 
 Both use the same `Write-Log` function, so transitioning between them is seamless.
 
+## Quick Start
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+irm https://raw.githubusercontent.com/kdscheuer/PowerShellScriptBootStrap/main/setup/setup.ps1 | iex
+```
+
 # PowerShell Script Template
 - [Overview](#overview)
 - [Logging](#logging)
