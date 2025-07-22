@@ -17,6 +17,6 @@ snippets = {}
 snippets.update(make_snippet("bootstrap.ps1", "!bs", "PowerShell Bootstrap Full"))
 snippets.update(make_snippet("bootstrap-lite.ps1", "!bsl", "PowerShell Bootstrap Lite"))
 
-with open("setup/setup.json", "w", encoding='utf-8') as out_file:
+with open("setup/powershell.json", "w", encoding='utf-8') as out_file:
     json.dump(snippets, out_file, indent=2)
 
