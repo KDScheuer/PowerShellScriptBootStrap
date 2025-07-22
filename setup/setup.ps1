@@ -2,7 +2,7 @@ $repoUrl = "https://github.com/kdscheuer/PowerShellScriptBootStrap.git"
 $repoName = "PowerShellScriptBootStrap"
 $localPath = "$env:USERPROFILE\$repoName"
 $snippetSource = "$localPath\setup\setup.json"
-$snippetDest = "$env:APPDATA\Code\User\snippets\bootstrap-setup.json"
+$snippetDest = "$env:APPDATA\Code\User\snippets\powershell.json"
 
 # Clone or update the repo
 if (!(Test-Path $localPath)) {
