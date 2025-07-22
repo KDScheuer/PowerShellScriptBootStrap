@@ -27,6 +27,7 @@ catch {
     Write-Warning "Error Copying files from $snippetSource to $snippetDest"
 }
 finally {
+    Set-Location $env:USERPROFILE
     Remove-Item -Recurse -Force $localPath
     Write-Host "🧹 Deleted temporary repo at: $localPath"
 }
