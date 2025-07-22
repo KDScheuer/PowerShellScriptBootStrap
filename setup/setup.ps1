@@ -23,7 +23,7 @@ catch {
 try {
     if (Test-Path $snippetSource) {
         Write-Host "Copying PowerShell snippets to VS Code..."
-        Copy-Item $snippetSource $snippetDest -Force
+        Copy-Item $snippetSource $snippetDest -Force | Out-Null
         Write-Host "✅ Snippets installed to: $snippetDest" -ForegroundColor Green
     } else {
         Write-Warning "🚫 Snippet file not found: $snippetSource"
@@ -34,6 +34,6 @@ catch {
 }
 finally {
     Set-Location $env:USERPROFILE
-    Remove-Item -Recurse -Force $localPath
+    Remove-Item -Recurse -Force $localPath | Out-Null
     Write-Host "🧹 Deleted temporary repo at: $localPath" -ForegroundColor Green
 }
