@@ -17,11 +17,22 @@ This repository includes two PowerShell script templates:
 Both use the same `Write-Log` function, so transitioning between them is seamless.
 
 ## Quick Start
+### Manual Setup
+You can just copy and paste the code from the templates into your IDE.
 
+#### OR
+Run the following commands to enable auto template population in VS Code
+1. Install the VS Code Snippet
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 irm https://raw.githubusercontent.com/kdscheuer/PowerShellScriptBootStrap/main/setup/setup.ps1 | iex
 ```
+2. In VS Code open a new .ps1 file, and enter
+``` powershell
+!bs # Then Tab or Enter for full template
+OR
+!bsl # Then Tab or Enter for the Lite template
+``` 
 
 # PowerShell Script Template
 - [Overview](#overview)
